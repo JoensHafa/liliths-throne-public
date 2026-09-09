@@ -174,6 +174,15 @@ public class BreastCrotch implements BodyPartInterface {
 				+ "</p>");
 	}
 
+	/**
+	 * Sets the raw sagginess value without generating any description. Intended for body generation.
+	 * 
+	 * @param sagginess Value to set sagginess to. Clamped to the range of BreastSagginess.
+	 */
+	public void setSagginessValue(int sagginess) {
+		this.sagginess = Math.max(0, Math.min(sagginess, BreastSagginess.getMaximumSagginess().getValue()));
+	}
+
 	public Nipples getNipples() {
 		return nipples;
 	}

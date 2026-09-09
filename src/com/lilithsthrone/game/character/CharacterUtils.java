@@ -72,6 +72,7 @@ import com.lilithsthrone.game.character.body.types.VaginaType;
 import com.lilithsthrone.game.character.body.types.WingType;
 import com.lilithsthrone.game.character.body.valueEnums.AgeCategory;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.CoveringModifier;
@@ -1868,6 +1869,51 @@ public class CharacterUtils {
 				&& !Main.game.isFutanariTesticlesEnabled()) {
 			body.getPenis().getTesticle().setInternal(null, true);
 		}
+
+		// Set breast sagginess:
+		body.getBreast().setSagginessValue(generateSagginess(body.getBreast().getRawSizeValue(), body.getBreast().getShape()));
+		body.getBreastCrotch().setSagginessValue(generateSagginess(body.getBreastCrotch().getRawSizeValue(), body.getBreastCrotch().getShape()));
+	}
+
+	/**
+	 * Generates a weighted-random sagginess value. The base roll is centred on ONE_NATURAL, with larger
+	 * breasts receiving an additional bonus, as more mass results in more sag. Breasts below the minimum
+	 * cup size for having breasts never sag, and PERKY-shaped breasts are capped at ONE_NATURAL, since
+	 * that shape is itself a statement about how little a breast hangs.
+	 * 
+	 * @param rawCupSize The raw cup size measurement of the breast.
+	 * @param shape The shape of the breast.
+	 * @return A sagginess value within the range of BreastSagginess.
+	 */
+	private static int generateSagginess(int rawCupSize, BreastShape shape) {
+		if(rawCupSize < CupSize.getMinimumCupSizeForBreasts().getMeasurement()) {
+			return BreastSagginess.ZERO_FIRM.getValue();
+		}
+
+		int sagginess;
+		int roll = Util.random.nextInt(100);
+		if(roll < 18) {
+			sagginess = BreastSagginess.ZERO_FIRM.getValue();
+		} else if(roll < 60) {
+			sagginess = BreastSagginess.ONE_NATURAL.getValue();
+		} else if(roll < 85) {
+			sagginess = BreastSagginess.TWO_DROOPING.getValue();
+		} else if(roll < 97) {
+			sagginess = BreastSagginess.THREE_LOW_HANGING.getValue();
+		} else {
+			sagginess = BreastSagginess.FOUR_SAGGING.getValue();
+		}
+
+		// Larger breasts sag more; one extra step per bracket above a C-cup, capped at +2:
+		int sizeSteps = (rawCupSize - CupSize.C.getMeasurement()) / 4;
+		sagginess += Math.max(0, Math.min(2, sizeSteps));
+
+		if(shape==BreastShape.PERKY) {
+			sagginess = Math.min(sagginess, BreastSagginess.ONE_NATURAL.getValue());
+		}
+
+		// FIVE_UDDER_LIKE is never generated - it can only be reached through pregnancy, weights or transformation:
+		return Math.max(0, Math.min(sagginess, BreastSagginess.FOUR_SAGGING.getValue()));
 	}
 	
 	private static void setBodyHair(Body body) {
