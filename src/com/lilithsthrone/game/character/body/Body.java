@@ -4445,7 +4445,11 @@ public class Body implements XMLSaving {
 			if(owner.hasBreasts()) {
 				descriptionSB.append(viewedBreast.getSagginess().getDescription()+" ");
 			}
-			descriptionSB.append("On each of [npc.her] "+(owner.hasBreasts()?owner.getBreastShape().getDescriptor()+" breasts":"pecs")+", [npc.she] [npc.has] "+Util.intToString(owner.getNippleCountPerBreast())+" [npc.nippleSize], ");
+			String breastShapeDescriptor = "";
+			if(owner.hasBreasts() && !viewedBreast.getSagginess().isContradictedByShape(owner.getBreastShape())) {
+				breastShapeDescriptor = owner.getBreastShape().getDescriptor()+" ";
+			}
+			descriptionSB.append("On each of [npc.her] "+(owner.hasBreasts()?breastShapeDescriptor+"breasts":"pecs")+", [npc.she] [npc.has] "+Util.intToString(owner.getNippleCountPerBreast())+" [npc.nippleSize], ");
 			
 			switch(owner.getNippleShape()) {
 				case NORMAL:
