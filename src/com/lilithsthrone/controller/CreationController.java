@@ -831,6 +831,18 @@ public class CreationController {
 		}
 	}
 	
+	public static void initCrotchBreastSagginessListeners() {
+		for (BreastSagginess bs : BreastSagginess.values()) {
+			String id = "BREAST_CROTCH_SAGGINESS_"+bs;
+			if (MainController.document.getElementById(id) != null) {
+				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e->{
+					BodyChanging.getTarget().setBreastCrotchSagginess(bs.getValue());
+					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
+				}, false);
+			}
+		}
+	}
+	
 	public static void initCrotchBreastShapeListeners() {
 		for (BreastShape bs : BreastShape.values()) {
 			String id = "BREAST_CROTCH_SHAPE_"+bs;

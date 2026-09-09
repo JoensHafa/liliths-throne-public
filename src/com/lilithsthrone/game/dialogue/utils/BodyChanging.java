@@ -1275,6 +1275,7 @@ public class BodyChanging {
 						"<div style='clear:left;'>"
 								+CharacterModificationUtils.getSelfTransformBreastCrotchSizeDiv()
 								+CharacterModificationUtils.getSelfTransformBreastCrotchShapeDiv()
+								+CharacterModificationUtils.getSelfTransformBreastCrotchSagginessDiv()
 								+"</div>"
 
 								+"<div style='clear:left;'>"

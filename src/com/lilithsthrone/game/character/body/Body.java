@@ -4686,6 +4686,10 @@ public class Body implements XMLSaving {
 				}
 			}
 			
+			if(viewedBreastCrotch.getRawSizeValue()>0) {
+				descriptionSB.append(" "+viewedBreastCrotch.getSagginess().getCrotchDescription());
+			}
+			
 			if(viewedBreastCrotch.getShape()==BreastShape.UDDERS) {
 				if(breastCrotch.getRows()>0) {
 					descriptionSB.append(" They are formed into [npc.totalCrotchBoobs] protrusions, upon each of which [npc.she] [npc.has] [npc.crotchBoobsNipplesPerBreast] [npc.crotchNippleSize], ");

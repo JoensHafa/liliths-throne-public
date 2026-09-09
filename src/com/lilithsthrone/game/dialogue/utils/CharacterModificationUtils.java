@@ -2975,6 +2975,32 @@ public class CharacterModificationUtils {
 				true);
 	}
 
+	public static String getSelfTransformBreastCrotchSagginessDiv() {
+		contentSB.setLength(0);
+		
+		for(BreastSagginess bs : BreastSagginess.values()) {
+			if(BodyChanging.getTarget().getBreastCrotchSagginess() == bs) {
+				contentSB.append(
+						"<div class='cosmetics-button active'>"
+							+ "<span style='color:"+PresetColour.TRANSFORMATION_SEXUAL.toWebHexString()+";'>"+Util.capitaliseSentence(bs.getDescriptor())+"</span>"
+						+ "</div>");
+				
+			} else {
+				contentSB.append(
+						"<div id='BREAST_CROTCH_SAGGINESS_"+bs+"' class='cosmetics-button'>"
+							+ "<span style='color:"+PresetColour.TRANSFORMATION_SEXUAL.getShades()[0]+";'>"+Util.capitaliseSentence(bs.getDescriptor())+"</span>"
+						+ "</div>");
+			}
+		}
+
+		return applyWrapper(
+				UtilText.parse(BodyChanging.getTarget(), Util.capitaliseSentence(getCrotchBoobName(false))+" Sagginess"),
+				UtilText.parse(BodyChanging.getTarget(), "Change how much [npc.namePos] "+getCrotchBoobName(true)+" hang down."),
+				"BREAST_CROTCH_SAGGINESS",
+				contentSB.toString(),
+				true);
+	}
+
 	public static String getSelfTransformBreastRowsDiv() {
 		contentSB.setLength(0);
 		
