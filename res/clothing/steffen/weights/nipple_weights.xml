@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<clothing>
+	<coreAttributes>
+		<value>350</value>
+		<determiner><![CDATA[a]]></determiner>
+		<name appendColourName="false"><![CDATA[nipple weight]]></name>
+		<namePlural pluralByDefault="true"><![CDATA[nipple weights]]></namePlural>
+		<description><![CDATA[A matched pair of heavy metal weights, each fitted with a padded clamp designed to grip firmly around a nipple. Worn for long enough, the constant downward pull does lasting work on the wearer's breasts, drawing them into a permanently lower, heavier hang.]]></description>
+		<physicalResistance>0</physicalResistance>
+		<femininity>ANDROGYNOUS</femininity>
+		<equipSlots>
+		  <slot>NIPPLE</slot>
+		</equipSlots>
+		<rarity>COMMON</rarity>
+		<clothingSet/>
+		<imageName>nipple_weights.svg</imageName>
+		<imageEquippedName/>
+		<effects>
+			<effect limit="0" mod1="CLOTHING_SEXUAL" mod2="CLOTHING_VIBRATION" potency="MINOR_BOOST" timer="0" type="CLOTHING"/>
+		</effects>
+		
+		<blockedPartsList slot="NIPPLE">
+			<blockedParts>
+				<displacementType>REMOVE_OR_EQUIP</displacementType>
+				<clothingAccessRequired>
+					<clothingAccess>CHEST</clothingAccess>
+				</clothingAccessRequired>
+				<blockedBodyParts/>
+				<clothingAccessBlocked/>
+				<concealedSlots/>
+			</blockedParts>
+		</blockedPartsList>
+		
+		<incompatibleSlots slot="NIPPLE"/>
+		
+		<primaryColours>
+			<colour>CLOTHING_STEEL</colour>
+		</primaryColours>
+		<primaryColoursDye values="ALL_METAL"/>
+		<secondaryColours>
+			<colour>CLOTHING_BLACK</colour>
+		</secondaryColours>
+		<secondaryColoursDye values="ALL"/>
+		<tertiaryColours/>
+		<tertiaryColoursDye/>
+	
+		<itemTags> <!-- tag values: https://github.com/Innoxia/liliths-throne-public/blob/master/src/com/lilithsthrone/game/inventory/ItemTag.java -->
+			<tag>ENABLE_SEX_EQUIP</tag>
+			<tag>RIGID_MATERIAL</tag>
+			<tag>FITS_FERAL_ALL_BODY</tag>
+			<tag>NO_RANDOM_SPAWN</tag>
+			<tag>WEIGHS_DOWN_BREASTS</tag>
+		</itemTags>
+	</coreAttributes>
+	
+	
+	<replacementText slot="NIPPLE" type="REMOVE_OR_EQUIP">
+		<self>
+			<![CDATA[[npc.Name] [npc.verb(clamp)] the weights into place on [npc.her] [npc.nipples], and [npc.she] [npc.verb(let)] out a slow breath as [npc.her] [npc.breasts+] are dragged down by the sudden pull.]]>
+		</self>
+		<other>
+			<![CDATA[[npc.Name] [npc.verb(clamp)] the weights into place on [npc2.namePos] [npc2.nipples], and [npc2.her] [npc2.breasts+] are dragged down by the sudden pull.]]>
+		</other>
+		<otherRough>
+			<![CDATA[[npc.Name] roughly [npc.verb(snap)] the weights shut on [npc2.namePos] [npc2.nipples], letting them drop without warning so that [npc2.her] [npc2.breasts+] are yanked down by the sudden pull.]]>
+		</otherRough>
+	</replacementText>
+
+	<displacementText slot="NIPPLE" type="REMOVE_OR_EQUIP">
+		<self>
+			<![CDATA[[npc.Name] [npc.verb(unclamp)] the weights from [npc.her] [npc.nipples], and [npc.her] [npc.breasts+] rise a little as the pull is released.]]>
+		</self>
+		<other>
+			<![CDATA[[npc.Name] [npc.verb(unclamp)] the weights from [npc2.namePos] [npc2.nipples], and [npc2.her] [npc2.breasts+] rise a little as the pull is released.]]>
+		</other>
+		<otherRough>
+			<![CDATA[With no regard for [npc2.her] comfort, [npc.name] [npc.verb(yank)] the weights straight off [npc2.namePos] [npc2.nipples].]]>
+		</otherRough>
+	</displacementText>
+	
+</clothing>

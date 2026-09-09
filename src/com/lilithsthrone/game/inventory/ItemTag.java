@@ -425,6 +425,11 @@ public enum ItemTag {
 					"[style.colourSex(Seals nipples (does not get dirty from creampies))]"),
 			true),
 	
+	WEIGHS_DOWN_BREASTS( // Wearing this clothing gradually and permanently increases the wearer's breast sagginess.
+			Util.newArrayListOfValues(
+					"[style.colourSex(Weighs down breasts (gradually increases sagginess))]"),
+			true),
+	
 	MILKING_EQUIPMENT(
 			Util.newArrayListOfValues(
 					"[style.colourMilk(Milking equipment (drains creampies))]"),

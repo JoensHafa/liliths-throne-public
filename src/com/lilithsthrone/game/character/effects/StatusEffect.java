@@ -4442,6 +4442,59 @@ public class StatusEffect {
 	/** Minimum total litter count at which a pregnancy counts as a hyper pregnancy for the purposes of breast sagginess. */
 	private static final int HYPER_PREGNANCY_LITTER_SIZE = 8;
 	
+	/** Base chance per in-game hour that worn breast weights increase the wearer's sagginess by one step. */
+	private static final float BREAST_WEIGHT_CHANCE_PER_HOUR = 0.08f;
+	
+	public static AbstractStatusEffect BREAST_WEIGHTS = new AbstractStatusEffect(70,
+			"Weighted Breasts",
+			"milkFull",
+			PresetColour.GENERIC_SEX,
+			false,
+			null,
+			Util.newArrayListOfValues("<b style='color: " + PresetColour.GENERIC_SEX.toWebHexString() + "'>Increases breast sagginess over time</b>")) {
+		@Override
+		public boolean isConditionsMet(GameCharacter target) {
+			if(!target.hasBreasts()) {
+				return false;
+			}
+			AbstractClothing weights = target.getClothingInSlot(InventorySlot.NIPPLE);
+			return weights!=null && weights.getItemTags().contains(ItemTag.WEIGHS_DOWN_BREASTS);
+		}
+		@Override
+		public String applyEffect(GameCharacter target, int secondsPassed, long totalSecondsPassed) {
+			if(target.getBreastRawSagginessValue()>=BreastSagginess.getMaximumSagginess().getValue()) {
+				return "";
+			}
+			
+			// Heavier breasts are pulled down faster, while each further step takes progressively longer:
+			float sizeMultiplier = 1f + Math.max(0, target.getBreastRawSizeValue()-CupSize.C.getMeasurement()) / 10f;
+			float stepMultiplier = 1f / (1f + target.getBreastRawSagginessValue());
+			float chance = (secondsPassed/3600f) * BREAST_WEIGHT_CHANCE_PER_HOUR * sizeMultiplier * stepMultiplier;
+			
+			if(Util.random.nextFloat()>=chance) {
+				return "";
+			}
+			target.incrementBreastSagginess(1);
+			
+			if(!target.isPlayer()) {
+				return "";
+			}
+			return "<p><i>"
+						+ "The relentless downward pull of the weights has done its work. "
+						+ target.getBreastSagginess().getGrowthDescription()
+						+ " You now have [style.boldSex("+target.getBreastSagginess().getDescriptor()+" breasts)]!"
+					+ "</i></p>";
+		}
+		@Override
+		public String getDescription(GameCharacter target) {
+			if(target.isPlayer()) {
+				return "The weights clamped to your nipples drag steadily downwards, slowly and permanently stretching your breasts into a lower hang.";
+			}
+			return UtilText.parse(target,
+					"The weights clamped to [npc.namePos] [npc.nipples] drag steadily downwards, slowly and permanently stretching [npc.her] [npc.breasts] into a lower hang.");
+		}
+	};
+	
 	public static AbstractStatusEffect PREGNANT_1 = new AbstractStatusEffect(80,
 			"pregnant",
 			"pregnancy1",
