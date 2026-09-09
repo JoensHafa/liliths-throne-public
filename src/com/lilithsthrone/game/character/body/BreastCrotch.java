@@ -7,6 +7,7 @@ import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.body.abstractTypes.AbstractBreastType;
 import com.lilithsthrone.game.character.body.types.BreastType;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeShape;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.CupSize;
@@ -34,6 +35,7 @@ public class BreastCrotch implements BodyPartInterface {
 	
 	protected AbstractBreastType type;
 	protected BreastShape shape;
+	protected int sagginess = BreastSagginess.ONE_NATURAL.getValue();
 	protected int size;
 	protected int rows;
 	protected int milkStorage;
@@ -63,6 +65,7 @@ public class BreastCrotch implements BodyPartInterface {
 	public BreastCrotch(BreastCrotch breastCrotchToCopy) {
 		this.type = breastCrotchToCopy.type;
 		this.shape = breastCrotchToCopy.shape;
+		this.sagginess = breastCrotchToCopy.sagginess;
 		this.size = breastCrotchToCopy.size;
 		this.milkStorage = breastCrotchToCopy.milkStorage;
 		this.milkStored = breastCrotchToCopy.milkStored;
@@ -119,6 +122,55 @@ public class BreastCrotch implements BodyPartInterface {
 				"<p>"
 					+ "A strange tingling feeling rises up into [npc.namePos] crotch, and before [npc.she] [npc.verb(know)] what's happening, [npc.her] [npc.crotchBoobs] transform into a new shape...<br/>"
 					+ "[npc.Name] now [npc.has] [style.boldSex("+shape.getDescriptor()+" [npc.crotchBoobs])]!"
+				+ "</p>");
+	}
+
+	// Sagginess:
+
+	public BreastSagginess getSagginess() {
+		return BreastSagginess.getSagginessFromInt(sagginess);
+	}
+
+	public int getRawSagginessValue() {
+		return sagginess;
+	}
+
+	/**
+	 * Sets the raw sagginess value. Value is clamped to the range of BreastSagginess.
+	 * 
+	 * @param sagginess Value to set sagginess to.
+	 * @return description of the change
+	 */
+	public String setSagginess(GameCharacter owner, int sagginess) {
+		int oldValue = this.sagginess;
+		this.sagginess = Math.max(0, Math.min(sagginess, BreastSagginess.getMaximumSagginess().getValue()));
+
+		if(!isCharacterInitialised(owner)) {
+			return "";
+		}
+
+		int change = this.sagginess - oldValue;
+
+		if(change == 0) {
+			return UtilText.parse(owner,
+					"<p style='text-align:center;'>[style.colourDisabled(The shape of [npc.namePos] [npc.crotchBoobs] doesn't change...)]</p>");
+		}
+
+		if(!owner.hasBreastsCrotch()) {
+			return UtilText.parse(owner,
+					"<p>"
+						+ "A strange tingling feeling rises up into [npc.namePos] crotch, but as [npc.she] [npc.do]n't have any [npc.crotchBoobs], nothing seems to happen...<br/>"
+						+ "If [npc.she] ever [npc.verb(grow)] any, they will now be [style.boldSex("+getSagginess().getDescriptor()+")]!"
+					+ "</p>");
+		}
+
+		return UtilText.parse(owner,
+				"<p>"
+					+ "[npc.Name] [npc.verb(feel)] a warm, heavy sensation spreading through [npc.her] [npc.crotchBoobs], and "
+					+ (change > 0
+						? "they slowly settle into a lower, heavier position against [npc.her] stomach.<br/>"
+						: "they slowly lift into a firmer, higher position against [npc.her] stomach.<br/>")
+					+ "[npc.Name] now [npc.has] [style.boldSex("+getSagginess().getDescriptor()+" [npc.crotchBoobs])]!"
 				+ "</p>");
 	}
 

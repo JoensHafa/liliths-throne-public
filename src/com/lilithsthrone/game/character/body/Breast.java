@@ -6,6 +6,7 @@ import java.util.List;
 import com.lilithsthrone.game.character.GameCharacter;
 import com.lilithsthrone.game.character.body.abstractTypes.AbstractBreastType;
 import com.lilithsthrone.game.character.body.valueEnums.AreolaeShape;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.CupSize;
@@ -31,6 +32,7 @@ public class Breast implements BodyPartInterface {
 	
 	protected AbstractBreastType type;
 	protected BreastShape shape;
+	protected int sagginess = BreastSagginess.ONE_NATURAL.getValue();
 	protected int size;
 	protected int rows;
 	protected int milkStorage;
@@ -65,6 +67,7 @@ public class Breast implements BodyPartInterface {
 	public Breast(Breast breastToCopy) {
 		this.type = breastToCopy.type;
 		this.shape = breastToCopy.shape;
+		this.sagginess = breastToCopy.sagginess;
 		this.size = breastToCopy.size;
 		this.milkStorage = breastToCopy.milkStorage;
 		this.milkStored = breastToCopy.milkStored;
@@ -110,6 +113,55 @@ public class Breast implements BodyPartInterface {
 					+ "[npc.Name] now [npc.has] [style.boldSex("+shape.getDescriptor()+" breasts)]!"
 				+ "</p>");
 		
+	}
+
+	// Sagginess:
+
+	public BreastSagginess getSagginess() {
+		return BreastSagginess.getSagginessFromInt(sagginess);
+	}
+
+	public int getRawSagginessValue() {
+		return sagginess;
+	}
+
+	/**
+	 * Sets the raw sagginess value. Value is clamped to the range of BreastSagginess.
+	 * 
+	 * @param sagginess Value to set sagginess to.
+	 * @return description of the change
+	 */
+	public String setSagginess(GameCharacter owner, int sagginess) {
+		int oldValue = this.sagginess;
+		this.sagginess = Math.max(0, Math.min(sagginess, BreastSagginess.getMaximumSagginess().getValue()));
+
+		if(!isCharacterInitialised(owner)) {
+			return "";
+		}
+
+		int change = this.sagginess - oldValue;
+
+		if(change == 0) {
+			return UtilText.parse(owner,
+					"<p style='text-align:center;'>[style.colourDisabled(The shape of [npc.namePos] [npc.breasts] doesn't change...)]</p>");
+		}
+
+		if(!owner.hasBreasts()) {
+			return UtilText.parse(owner,
+					"<p>"
+						+ "A strange tingling feeling rises up into [npc.namePos] chest, but as [npc.she] [npc.do]n't have any breasts, nothing seems to happen...<br/>"
+						+ "If [npc.she] ever [npc.verb(grow)] any, they will now be [style.boldSex("+getSagginess().getDescriptor()+")]!"
+					+ "</p>");
+		}
+
+		return UtilText.parse(owner,
+				"<p>"
+					+ "[npc.Name] [npc.verb(feel)] a warm, heavy sensation spreading through [npc.her] [npc.breasts], and "
+					+ (change > 0
+						? "they slowly settle into a lower, heavier position on [npc.her] chest.<br/>"
+						: "they slowly lift into a firmer, higher position on [npc.her] chest.<br/>")
+					+ "[npc.Name] now [npc.has] [style.boldSex("+getSagginess().getDescriptor()+" breasts)]!"
+				+ "</p>");
 	}
 
 	public Nipples getNipples() {

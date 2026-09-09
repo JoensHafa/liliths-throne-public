@@ -619,6 +619,7 @@ public class Body implements XMLSaving {
 		parentElement.appendChild(bodyBreast);
 			XMLUtil.addAttribute(doc, bodyBreast, "type", BreastType.getIdFromBreastType(this.breast.getType()));
 			XMLUtil.addAttribute(doc, bodyBreast, "shape", this.breast.shape.toString());
+			XMLUtil.addAttribute(doc, bodyBreast, "sagginess", String.valueOf(this.breast.sagginess));
 			XMLUtil.addAttribute(doc, bodyBreast, "size", String.valueOf(this.breast.size));
 			XMLUtil.addAttribute(doc, bodyBreast, "rows", String.valueOf(this.breast.rows));
 			XMLUtil.addAttribute(doc, bodyBreast, "milkStorage", String.valueOf(this.breast.milkStorage));
@@ -652,6 +653,7 @@ public class Body implements XMLSaving {
 		parentElement.appendChild(bodyCrotchBreast);
 			XMLUtil.addAttribute(doc, bodyCrotchBreast, "type", BreastType.getIdFromBreastType(this.breastCrotch.getType()));
 			XMLUtil.addAttribute(doc, bodyCrotchBreast, "shape", this.breastCrotch.shape.toString());
+			XMLUtil.addAttribute(doc, bodyCrotchBreast, "sagginess", String.valueOf(this.breastCrotch.sagginess));
 			XMLUtil.addAttribute(doc, bodyCrotchBreast, "size", String.valueOf(this.breastCrotch.size));
 			XMLUtil.addAttribute(doc, bodyCrotchBreast, "rows", String.valueOf(this.breastCrotch.rows));
 			XMLUtil.addAttribute(doc, bodyCrotchBreast, "milkStorage", String.valueOf(this.breastCrotch.milkStorage));
@@ -1101,6 +1103,11 @@ public class Body implements XMLSaving {
 			if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.1.9")) { // Change from percentage-based to set value:
 				importedBreast.milkRegeneration = FluidRegeneration.ONE_AVERAGE.getMedianRegenerationValuePerDay();
 			}
+		} catch(Exception ex) {
+		}
+		
+		try {
+			importedBreast.sagginess = Integer.valueOf(breasts.getAttribute("sagginess"));
 		} catch(Exception ex) {
 		}
 		
@@ -1991,6 +1998,11 @@ public class Body implements XMLSaving {
 				if(Main.isVersionOlderThan(Game.loadingVersion, "0.3.2")) { // Change from percentage-based to set value:
 					importedCrotchBreast.milkRegeneration = FluidRegeneration.ONE_AVERAGE.getMedianRegenerationValuePerDay();
 				}
+			} catch(Exception ex) {
+			}
+			
+			try {
+				importedCrotchBreast.sagginess = Integer.valueOf(breasts.getAttribute("sagginess"));
 			} catch(Exception ex) {
 			}
 
