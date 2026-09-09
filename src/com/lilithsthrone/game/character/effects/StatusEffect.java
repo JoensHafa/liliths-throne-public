@@ -4452,46 +4452,65 @@ public class StatusEffect {
 			false,
 			null,
 			Util.newArrayListOfValues("<b style='color: " + PresetColour.GENERIC_SEX.toWebHexString() + "'>Increases breast sagginess over time</b>")) {
-		@Override
-		public boolean isConditionsMet(GameCharacter target) {
-			if(!target.hasBreasts()) {
+		/** @return true if the target is wearing weights in the supplied slot. */
+		private boolean isWearingWeights(GameCharacter target, InventorySlot slot) {
+			AbstractClothing weights = target.getClothingInSlot(slot);
+			return weights!=null && weights.getItemTags().contains(ItemTag.WEIGHS_DOWN_BREASTS);
+		}
+		/** @return true if a step should be gained this tick, based on size, current sagginess and elapsed time. */
+		private boolean isSagginessGained(int rawCupSize, int rawSagginess, int secondsPassed) {
+			if(rawSagginess>=BreastSagginess.getMaximumSagginess().getValue()) {
 				return false;
 			}
-			AbstractClothing weights = target.getClothingInSlot(InventorySlot.NIPPLE);
-			return weights!=null && weights.getItemTags().contains(ItemTag.WEIGHS_DOWN_BREASTS);
+			// Heavier breasts are pulled down faster, while each further step takes progressively longer:
+			float sizeMultiplier = 1f + Math.max(0, rawCupSize-CupSize.C.getMeasurement()) / 10f;
+			float stepMultiplier = 1f / (1f + rawSagginess);
+			float chance = (secondsPassed/3600f) * BREAST_WEIGHT_CHANCE_PER_HOUR * sizeMultiplier * stepMultiplier;
+			return Util.random.nextFloat()<chance;
+		}
+		@Override
+		public boolean isConditionsMet(GameCharacter target) {
+			return (target.hasBreasts() && isWearingWeights(target, InventorySlot.NIPPLE))
+					|| (target.hasBreastsCrotch() && isWearingWeights(target, InventorySlot.STOMACH));
 		}
 		@Override
 		public String applyEffect(GameCharacter target, int secondsPassed, long totalSecondsPassed) {
-			if(target.getBreastRawSagginessValue()>=BreastSagginess.getMaximumSagginess().getValue()) {
-				return "";
+			StringBuilder weightSB = new StringBuilder();
+			
+			if(target.hasBreasts()
+					&& isWearingWeights(target, InventorySlot.NIPPLE)
+					&& isSagginessGained(target.getBreastRawSizeValue(), target.getBreastRawSagginessValue(), secondsPassed)) {
+				target.incrementBreastSagginess(1);
+				if(target.isPlayer()) {
+					weightSB.append("<p><i>"
+								+ "The relentless downward pull of the weights has done its work. "
+								+ target.getBreastSagginess().getGrowthDescription()
+								+ " You now have [style.boldSex("+target.getBreastSagginess().getDescriptor()+" breasts)]!"
+							+ "</i></p>");
+				}
 			}
 			
-			// Heavier breasts are pulled down faster, while each further step takes progressively longer:
-			float sizeMultiplier = 1f + Math.max(0, target.getBreastRawSizeValue()-CupSize.C.getMeasurement()) / 10f;
-			float stepMultiplier = 1f / (1f + target.getBreastRawSagginessValue());
-			float chance = (secondsPassed/3600f) * BREAST_WEIGHT_CHANCE_PER_HOUR * sizeMultiplier * stepMultiplier;
-			
-			if(Util.random.nextFloat()>=chance) {
-				return "";
+			if(target.hasBreastsCrotch()
+					&& isWearingWeights(target, InventorySlot.STOMACH)
+					&& isSagginessGained(target.getBreastCrotchRawSizeValue(), target.getBreastCrotchRawSagginessValue(), secondsPassed)) {
+				target.incrementBreastCrotchSagginess(1);
+				if(target.isPlayer()) {
+					weightSB.append("<p><i>"
+								+ "The relentless downward pull of the weights has done its work, and your [pc.udders] now hang noticeably lower than before."
+								+ " You now have [style.boldSex("+target.getBreastCrotchSagginess().getDescriptor()+" [pc.udders])]!"
+							+ "</i></p>");
+				}
 			}
-			target.incrementBreastSagginess(1);
 			
-			if(!target.isPlayer()) {
-				return "";
-			}
-			return "<p><i>"
-						+ "The relentless downward pull of the weights has done its work. "
-						+ target.getBreastSagginess().getGrowthDescription()
-						+ " You now have [style.boldSex("+target.getBreastSagginess().getDescriptor()+" breasts)]!"
-					+ "</i></p>";
+			return weightSB.toString();
 		}
 		@Override
 		public String getDescription(GameCharacter target) {
 			if(target.isPlayer()) {
-				return "The weights clamped to your nipples drag steadily downwards, slowly and permanently stretching your breasts into a lower hang.";
+				return "The weights clamped to you drag steadily downwards, slowly and permanently stretching your breasts into a lower hang.";
 			}
 			return UtilText.parse(target,
-					"The weights clamped to [npc.namePos] [npc.nipples] drag steadily downwards, slowly and permanently stretching [npc.her] [npc.breasts] into a lower hang.");
+					"The weights clamped to [npc.name] drag steadily downwards, slowly and permanently stretching [npc.her] breasts into a lower hang.");
 		}
 	};
 	

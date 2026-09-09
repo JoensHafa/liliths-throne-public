@@ -734,6 +734,13 @@ public enum TFModifier {
 			Rarity.COMMON),
 	
 
+	TF_MOD_SAGGINESS("sagginess",
+			"Applies an effect related to how much a certain body part sags.",
+			"sagging",
+			"modifier_circle_size",
+			PresetColour.BASE_LILAC_LIGHT,
+			Rarity.COMMON),
+	
 	TF_MOD_REGENERATION("regeneration",
 			"Applies an effect related to the regeneration rate of fluids.",
 			"refilling",
@@ -1397,6 +1404,8 @@ public enum TFModifier {
 	TF_MOD_FETISH_PENIS_RECEIVING(Fetish.FETISH_PENIS_RECEIVING),
 	TF_MOD_FETISH_BREASTS_OTHERS(Fetish.FETISH_BREASTS_OTHERS),
 	TF_MOD_FETISH_BREASTS_SELF(Fetish.FETISH_BREASTS_SELF),
+	TF_MOD_FETISH_SAGGY_BREASTS_OTHERS(Fetish.FETISH_SAGGY_BREASTS_OTHERS),
+	TF_MOD_FETISH_SAGGY_BREASTS_SELF(Fetish.FETISH_SAGGY_BREASTS_SELF),
 	TF_MOD_FETISH_ORAL_RECEIVING(Fetish.FETISH_ORAL_RECEIVING),
 	TF_MOD_FETISH_ORAL_GIVING(Fetish.FETISH_ORAL_GIVING),
 	TF_MOD_FETISH_LEG_LOVER(Fetish.FETISH_LEG_LOVER),
@@ -1536,6 +1545,8 @@ public enum TFModifier {
 		TFBodyPartFetishList.add(TF_MOD_FETISH_ANAL_RECEIVING);
 		TFBodyPartFetishList.add(TF_MOD_FETISH_BREASTS_OTHERS);
 		TFBodyPartFetishList.add(TF_MOD_FETISH_BREASTS_SELF);
+		TFBodyPartFetishList.add(TF_MOD_FETISH_SAGGY_BREASTS_OTHERS);
+		TFBodyPartFetishList.add(TF_MOD_FETISH_SAGGY_BREASTS_SELF);
 		TFBodyPartFetishList.add(TF_MOD_FETISH_ORAL_GIVING);
 		TFBodyPartFetishList.add(TF_MOD_FETISH_ORAL_RECEIVING);
 		TFBodyPartFetishList.add(TF_MOD_FETISH_VAGINAL_GIVING);

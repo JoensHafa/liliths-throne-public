@@ -40,6 +40,7 @@ import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.ClitorisSize;
 import com.lilithsthrone.game.character.body.valueEnums.CumProduction;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.CupSize;
 import com.lilithsthrone.game.character.body.valueEnums.EyeShape;
 import com.lilithsthrone.game.character.body.valueEnums.Femininity;
@@ -290,6 +291,7 @@ public abstract class AbstractItemEffectType {
 						TFModifier.TF_MOD_SIZE,// breast size
 						TFModifier.TF_MOD_SIZE_SECONDARY,// nipple size
 						TFModifier.TF_MOD_SIZE_TERTIARY,// areolae size
+						TFModifier.TF_MOD_SAGGINESS,// breast sagginess
 						TFModifier.TF_MOD_CAPACITY,
 						Main.game.isPenetrationLimitationsEnabled()
 							?TFModifier.TF_MOD_DEPTH
@@ -486,6 +488,8 @@ public abstract class AbstractItemEffectType {
 						return NippleSize.FOUR_MASSIVE.getValue();
 					case TF_MOD_SIZE_TERTIARY:
 						return  AreolaeSize.FOUR_MASSIVE.getValue();
+					case TF_MOD_SAGGINESS:
+						return BreastSagginess.getMaximumSagginess().getValue();
 					case TF_MOD_WETNESS:
 						return Lactation.SEVEN_MONSTROUS_AMOUNT_POURING.getMaximumValue();
 					case TF_MOD_REGENERATION:
@@ -671,6 +675,9 @@ public abstract class AbstractItemEffectType {
 						break;
 					case TF_MOD_SIZE_TERTIARY:
 						descriptions.add(getClothingTFChangeDescriptionEntry(potency, "areolae size", AreolaeSize.getAreolaeSizeFromInt(limit).getName()));
+						break;
+					case TF_MOD_SAGGINESS:
+						descriptions.add(getClothingTFChangeDescriptionEntry(potency, "breast sagginess", BreastSagginess.getSagginessFromInt(limit).getDescriptor()));
 						break;
 					case TF_MOD_WETNESS:
 						descriptions.add(getClothingTFChangeDescriptionEntry(potency, "lactation", Units.fluid(limit, Units.ValueType.PRECISE, Units.UnitType.SHORT)));
@@ -1021,6 +1028,7 @@ public abstract class AbstractItemEffectType {
 		int breastSizeIncrement = (potency.isNegative()?-1:1);
 		int nippleSizeIncrement = (potency.isNegative()?-1:1);
 		int areolaeSizeIncrement = (potency.isNegative()?-1:1);
+		int sagginessIncrement = (potency.isNegative()?-1:1);
 		int lactationIncrement = (potency.isNegative()?-50:50);
 
 		int fluidRegenerationIncrement = (potency.isNegative()?-250:250);
@@ -1220,6 +1228,13 @@ public abstract class AbstractItemEffectType {
 								sb.append(target.incrementAreolaeSize(limit));
 							}
 							break;
+						case TF_MOD_SAGGINESS:
+							if(isWithinLimits(sagginessIncrement, target.getBreastRawSagginessValue(), limit)) {
+								sb.append(target.incrementBreastSagginess(sagginessIncrement));
+							} else if(isSetToLimit(sagginessIncrement, target.getBreastRawSagginessValue(), limit)) {
+								sb.append(target.setBreastSagginess(limit));
+							}
+							break;
 						case TF_MOD_CAPACITY:
 							if(isWithinLimits(capacityIncrement, target.getNippleRawCapacityValue(), limit)) {
 								sb.append(target.incrementNippleCapacity(capacityIncrement, true));
@@ -1318,6 +1333,13 @@ public abstract class AbstractItemEffectType {
 									sb.append(target.incrementBreastCrotchSize(breastSizeIncrement));
 								} else if(isSetToLimit(breastSizeIncrement, target.getBreastCrotchRawSizeValue(), limit)) {
 									sb.append(target.setBreastCrotchSize(limit));
+								}
+								break;
+							case TF_MOD_SAGGINESS:
+								if(isWithinLimits(sagginessIncrement, target.getBreastCrotchRawSagginessValue(), limit)) {
+									sb.append(target.incrementBreastCrotchSagginess(sagginessIncrement));
+								} else if(isSetToLimit(sagginessIncrement, target.getBreastCrotchRawSagginessValue(), limit)) {
+									sb.append(target.setBreastCrotchSagginess(limit));
 								}
 								break;
 							case TF_MOD_SIZE_SECONDARY:
@@ -2324,6 +2346,7 @@ public abstract class AbstractItemEffectType {
 				
 				secondaryModPotencyMap.put(TFModifier.TF_MOD_SIZE_SECONDARY, TFPotency.getAllPotencies());
 				secondaryModPotencyMap.put(TFModifier.TF_MOD_SIZE_TERTIARY, TFPotency.getAllPotencies());
+				secondaryModPotencyMap.put(TFModifier.TF_MOD_SAGGINESS, TFPotency.getAllPotencies());
 
 				if(primaryModifier==TFModifier.TF_BREASTS_CROTCH) {
 					secondaryModPotencyMap.put(TFModifier.TF_MOD_BREAST_SHAPE_UDDERS, Util.newArrayListOfValues(TFPotency.MINOR_BOOST));

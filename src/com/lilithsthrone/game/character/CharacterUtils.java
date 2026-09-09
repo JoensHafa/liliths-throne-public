@@ -1889,31 +1889,34 @@ public class CharacterUtils {
 		if(rawCupSize < CupSize.getMinimumCupSizeForBreasts().getMeasurement()) {
 			return BreastSagginess.ZERO_FIRM.getValue();
 		}
+		
+		// Turning the saggy breasts content preference all the way down stops the trait from being generated:
+		Integer sagginessPreference = Main.getProperties().fetishPreferencesMap.get(Fetish.FETISH_SAGGY_BREASTS_OTHERS);
+		if(sagginessPreference!=null && sagginessPreference<=0) {
+			return BreastSagginess.ONE_NATURAL.getValue();
+		}
 
 		int sagginess;
 		int roll = Util.random.nextInt(100);
-		if(roll < 18) {
+		if(roll < 20) {
 			sagginess = BreastSagginess.ZERO_FIRM.getValue();
-		} else if(roll < 60) {
+		} else if(roll < 65) {
 			sagginess = BreastSagginess.ONE_NATURAL.getValue();
-		} else if(roll < 85) {
+		} else if(roll < 90) {
 			sagginess = BreastSagginess.TWO_DROOPING.getValue();
-		} else if(roll < 97) {
-			sagginess = BreastSagginess.THREE_LOW_HANGING.getValue();
 		} else {
-			sagginess = BreastSagginess.FOUR_SAGGING.getValue();
+			sagginess = BreastSagginess.THREE_LOW_HANGING.getValue();
 		}
 
 		// Larger breasts sag more; one extra step per bracket above a C-cup, capped at +2:
-		int sizeSteps = (rawCupSize - CupSize.C.getMeasurement()) / 4;
+		int sizeSteps = (rawCupSize - CupSize.C.getMeasurement()) / 6;
 		sagginess += Math.max(0, Math.min(2, sizeSteps));
 
 		if(shape==BreastShape.PERKY) {
 			sagginess = Math.min(sagginess, BreastSagginess.ONE_NATURAL.getValue());
 		}
 
-		// FIVE_UDDER_LIKE is never generated - it can only be reached through pregnancy, weights or transformation:
-		return Math.max(0, Math.min(sagginess, BreastSagginess.FOUR_SAGGING.getValue()));
+		return Math.max(0, Math.min(sagginess, BreastSagginess.getMaximumSagginess().getValue()));
 	}
 	
 	private static void setBodyHair(Body body) {

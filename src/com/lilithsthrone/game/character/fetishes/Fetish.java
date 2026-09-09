@@ -365,6 +365,72 @@ public class Fetish {
 		public AbstractFetish getOpposite() { return Fetish.FETISH_BREASTS_OTHERS; }
 	};
 	
+	public static AbstractFetish FETISH_SAGGY_BREASTS_OTHERS = new AbstractFetish(60,
+			"saggy breast lover",
+			"others' saggy breasts",
+			"fetish_saggy_breasts_others",
+			FetishExperience.BASE_EXPERIENCE_GAIN,
+			PresetColour.GENERIC_ARCANE,
+			null,
+			null,
+			null) {
+		@Override
+		public String getDescription(GameCharacter owner) {
+			if(owner==null) {
+				return "This fetish relates to a person's attraction to heavy, low-hanging breasts on others.";
+				
+			} else if(owner.isPlayer()) {
+				return "You are irresistibly drawn to heavy, low-hanging breasts. The lower a partner's breasts droop, the more they hold your attention.";
+				
+			} else {
+				return UtilText.parse(owner, "[npc.Name] has a fetish for heavy, low-hanging breasts on others.");
+			}
+		}
+		@Override
+		public String getFetishDesireDescription(GameCharacter target, FetishDesire desire) {
+			return getGenericFetishDesireDescription(target, desire, "heavy, low-hanging breasts on your partners");
+		}
+		@Override
+		public CorruptionLevel getAssociatedCorruptionLevel() {
+			return CorruptionLevel.ONE_VANILLA;
+		}
+		@Override
+		public AbstractFetish getOpposite() { return Fetish.FETISH_SAGGY_BREASTS_SELF; }
+	};
+	
+	public static AbstractFetish FETISH_SAGGY_BREASTS_SELF = new AbstractFetish(60,
+			"saggy breasts",
+			"having saggy breasts",
+			"fetish_saggy_breasts_self",
+			FetishExperience.BASE_EXPERIENCE_GAIN,
+			PresetColour.GENERIC_ARCANE,
+			null,
+			null,
+			null) {
+		@Override
+		public String getDescription(GameCharacter owner) {
+			if(owner==null) {
+				return "This fetish relates to a person's desire for their own breasts to hang heavy and low.";
+				
+			} else if(owner.isPlayer()) {
+				return "You love the weight of your own breasts dragging downwards, and you want them to hang as low and heavy as they possibly can.";
+				
+			} else {
+				return UtilText.parse(owner, "[npc.Name] wants [npc.her] own breasts to hang as heavy and low as possible.");
+			}
+		}
+		@Override
+		public String getFetishDesireDescription(GameCharacter target, FetishDesire desire) {
+			return getGenericFetishDesireDescription(target, desire, "having your own breasts hang heavy and low");
+		}
+		@Override
+		public CorruptionLevel getAssociatedCorruptionLevel() {
+			return CorruptionLevel.ONE_VANILLA;
+		}
+		@Override
+		public AbstractFetish getOpposite() { return Fetish.FETISH_SAGGY_BREASTS_OTHERS; }
+	};
+	
 	public static AbstractFetish FETISH_LACTATION_OTHERS = new AbstractFetish(60,
 			"milk lover",
 			"being breast-fed",

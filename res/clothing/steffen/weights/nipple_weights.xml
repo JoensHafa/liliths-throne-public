@@ -11,6 +11,7 @@
 		<femininity>ANDROGYNOUS</femininity>
 		<equipSlots>
 		  <slot>NIPPLE</slot>
+		  <slot>STOMACH</slot>
 		</equipSlots>
 		<rarity>COMMON</rarity>
 		<clothingSet/>
@@ -32,7 +33,20 @@
 			</blockedParts>
 		</blockedPartsList>
 		
+		<blockedPartsList slot="STOMACH">
+			<blockedParts>
+				<displacementType>REMOVE_OR_EQUIP</displacementType>
+				<clothingAccessRequired>
+					<clothingAccess>WAIST</clothingAccess>
+				</clothingAccessRequired>
+				<blockedBodyParts/>
+				<clothingAccessBlocked/>
+				<concealedSlots/>
+			</blockedParts>
+		</blockedPartsList>
+		
 		<incompatibleSlots slot="NIPPLE"/>
+		<incompatibleSlots slot="STOMACH"/>
 		
 		<primaryColours>
 			<colour>CLOTHING_STEEL</colour>
@@ -46,11 +60,11 @@
 		<tertiaryColoursDye/>
 	
 		<itemTags> <!-- tag values: https://github.com/Innoxia/liliths-throne-public/blob/master/src/com/lilithsthrone/game/inventory/ItemTag.java -->
+			<tag>WEIGHS_DOWN_BREASTS</tag>
 			<tag>ENABLE_SEX_EQUIP</tag>
 			<tag>RIGID_MATERIAL</tag>
 			<tag>FITS_FERAL_ALL_BODY</tag>
 			<tag>NO_RANDOM_SPAWN</tag>
-			<tag>WEIGHS_DOWN_BREASTS</tag>
 		</itemTags>
 	</coreAttributes>
 	
@@ -76,6 +90,37 @@
 		</other>
 		<otherRough>
 			<![CDATA[With no regard for [npc2.her] comfort, [npc.name] [npc.verb(yank)] the weights straight off [npc2.namePos] [npc2.nipples].]]>
+		</otherRough>
+	</displacementText>
+	
+
+	<replacementText slot="STOMACH" type="REMOVE_OR_EQUIP">
+		<self>
+			<![CDATA[
+			#IF(npc.hasBreastsCrotch())
+				[npc.Name] [npc.verb(clamp)] the weights into place on [npc.her] [npc.crotchBoobs], and [npc.she] [npc.verb(let)] out a slow breath as they are dragged down by the sudden pull.
+			#ELSE
+				[npc.Name] [npc.verb(clamp)] the weights into place, and even though [npc.she] [npc.do]n't have any [npc.crotchBoobs], [npc.she] [npc.verb(leave)] them hanging from [npc.her] stomach anyway...
+			#ENDIF
+			]]>
+		</self>
+		<other>
+			<![CDATA[[npc.Name] [npc.verb(clamp)] the weights into place on [npc2.namePos] [npc2.crotchBoobs], which are dragged down by the sudden pull.]]>
+		</other>
+		<otherRough>
+			<![CDATA[[npc.Name] roughly [npc.verb(snap)] the weights shut on [npc2.namePos] [npc2.crotchBoobs], letting them drop without warning.]]>
+		</otherRough>
+	</replacementText>
+
+	<displacementText slot="STOMACH" type="REMOVE_OR_EQUIP">
+		<self>
+			<![CDATA[[npc.Name] [npc.verb(unclamp)] the weights from [npc.her] [npc.crotchBoobs], which rise a little as the pull is released.]]>
+		</self>
+		<other>
+			<![CDATA[[npc.Name] [npc.verb(unclamp)] the weights from [npc2.namePos] [npc2.crotchBoobs], which rise a little as the pull is released.]]>
+		</other>
+		<otherRough>
+			<![CDATA[With no regard for [npc2.her] comfort, [npc.name] [npc.verb(yank)] the weights straight off [npc2.namePos] [npc2.crotchBoobs].]]>
 		</otherRough>
 	</displacementText>
 	
