@@ -4442,6 +4442,9 @@ public class Body implements XMLSaving {
 			descriptionSB.append("[style.colourDisabled(You've never seen [npc.her] naked chest, so you don't know what [npc.her] nipples look like.)]");
 			
 		} else {
+			if(owner.hasBreasts()) {
+				descriptionSB.append(viewedBreast.getSagginess().getDescription()+" ");
+			}
 			descriptionSB.append("On each of [npc.her] "+(owner.hasBreasts()?owner.getBreastShape().getDescriptor()+" breasts":"pecs")+", [npc.she] [npc.has] "+Util.intToString(owner.getNippleCountPerBreast())+" [npc.nippleSize], ");
 			
 			switch(owner.getNippleShape()) {

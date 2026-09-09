@@ -123,6 +123,7 @@ import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
 import com.lilithsthrone.game.character.body.valueEnums.BodyMaterial;
 import com.lilithsthrone.game.character.body.valueEnums.BodyShape;
 import com.lilithsthrone.game.character.body.valueEnums.BodySize;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.ClitorisSize;
@@ -28753,6 +28754,19 @@ public abstract class GameCharacter implements XMLSaving {
 	public String setBreastShape(BreastShape shape) {
 		return body.getBreast().setShape(this, shape);
 	}
+		// Sagginess:
+	public BreastSagginess getBreastSagginess() {
+		return body.getBreast().getSagginess();
+	}
+	public int getBreastRawSagginessValue() {
+		return body.getBreast().getRawSagginessValue();
+	}
+	public String setBreastSagginess(int sagginess) {
+		return body.getBreast().setSagginess(this, sagginess);
+	}
+	public String incrementBreastSagginess(int increment) {
+		return setBreastSagginess(getBreastRawSagginessValue() + increment);
+	}
 	// Names:
 	public String getBreastName() {
 		return body.getBreast().getName(this);
@@ -29140,6 +29154,19 @@ public abstract class GameCharacter implements XMLSaving {
 	}
 	public String setBreastCrotchShape(BreastShape shape) {
 		return body.getBreastCrotch().setShape(this, shape);
+	}
+		// Sagginess:
+	public BreastSagginess getBreastCrotchSagginess() {
+		return body.getBreastCrotch().getSagginess();
+	}
+	public int getBreastCrotchRawSagginessValue() {
+		return body.getBreastCrotch().getRawSagginessValue();
+	}
+	public String setBreastCrotchSagginess(int sagginess) {
+		return body.getBreastCrotch().setSagginess(this, sagginess);
+	}
+	public String incrementBreastCrotchSagginess(int increment) {
+		return setBreastCrotchSagginess(getBreastCrotchRawSagginessValue() + increment);
 	}
 	// Names:
 	public String getBreastCrotchName() {
