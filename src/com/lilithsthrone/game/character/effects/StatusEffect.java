@@ -31,6 +31,7 @@ import com.lilithsthrone.game.character.body.abstractTypes.AbstractFluidType;
 import com.lilithsthrone.game.character.body.valueEnums.BodyMaterial;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.CumProduction;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.CupSize;
 import com.lilithsthrone.game.character.body.valueEnums.FluidTypeBase;
 import com.lilithsthrone.game.character.body.valueEnums.LegConfiguration;
@@ -4438,6 +4439,9 @@ public class StatusEffect {
 		}
 	};
 	
+	/** Minimum total litter count at which a pregnancy counts as a hyper pregnancy for the purposes of breast sagginess. */
+	private static final int HYPER_PREGNANCY_LITTER_SIZE = 8;
+	
 	public static AbstractStatusEffect PREGNANT_1 = new AbstractStatusEffect(80,
 			"pregnant",
 			"pregnancy1",
@@ -4469,6 +4473,19 @@ public class StatusEffect {
 				} else {
 					breastGrowth = true;
 					target.incrementBreastSize(valueIncrease);
+				}
+			}
+			
+			// Carrying a litter leaves the breasts hanging lower. The final stage is only reached through a very
+			// large litter, or by going through several further pregnancies once already at FOUR_SAGGING:
+			boolean sagginessGrowth = false;
+			if(target.hasBreasts() && target.getBreastRawSagginessValue()<BreastSagginess.getMaximumSagginess().getValue()) {
+				boolean hyperPregnancy = target.getPregnantLitter()!=null && target.getPregnantLitter().getTotalLitterCount()>=HYPER_PREGNANCY_LITTER_SIZE;
+				if(target.getBreastRawSagginessValue()<BreastSagginess.FOUR_SAGGING.getValue()
+						|| hyperPregnancy
+						|| Util.random.nextInt(100)<20) {
+					sagginessGrowth = true;
+					target.incrementBreastSagginess(1);
 				}
 			}
 			
@@ -4528,6 +4545,13 @@ public class StatusEffect {
 				sb.append("<p><i>"
 							+"Your breasts have swollen and grown larger as your body prepares to start lactating."
 							+ " You now have [style.boldSex([pc.breastSize]"  + (target.getBreastRawSizeValue()>CupSize.AA.getMeasurement()?", "+target.getBreastSize().getCupSizeName()+"-cup":"") + " breasts)]!"
+						+ "</i></p>");
+			}
+			if(sagginessGrowth) {
+				sb.append("<p><i>"
+							+"The extra weight you've been carrying has taken its toll on your chest. "
+							+target.getBreastSagginess().getGrowthDescription()
+							+ " You now have [style.boldSex("+target.getBreastSagginess().getDescriptor()+" breasts)]!"
 						+ "</i></p>");
 			}
 			if(udderGrowth) {
