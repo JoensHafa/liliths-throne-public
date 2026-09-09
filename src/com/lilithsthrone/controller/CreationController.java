@@ -53,6 +53,7 @@ import com.lilithsthrone.game.character.body.valueEnums.AreolaeSize;
 import com.lilithsthrone.game.character.body.valueEnums.AssSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyMaterial;
 import com.lilithsthrone.game.character.body.valueEnums.BodySize;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.ClitorisSize;
@@ -350,6 +351,18 @@ public class CreationController {
 				int finalI = i;
 				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e->{
 					BodyChanging.getTarget().setBreastRows(finalI);
+					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
+				}, false);
+			}
+		}
+	}
+	
+	public static void initBreastSagginessListeners() {
+		for (BreastSagginess bs : BreastSagginess.values()) {
+			String id = "BREAST_SAGGINESS_"+bs;
+			if (MainController.document.getElementById(id) != null) {
+				((EventTarget) MainController.document.getElementById(id)).addEventListener("click", e->{
+					BodyChanging.getTarget().setBreastSagginess(bs.getValue());
 					Main.game.setContent(new Response("", "", Main.game.getCurrentDialogueNode()));
 				}, false);
 			}

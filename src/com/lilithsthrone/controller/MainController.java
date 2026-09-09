@@ -1495,6 +1495,7 @@ public class MainController implements Initializable {
 				|| currentNode.equals(ScarlettsShop.HELENAS_SHOP_CUSTOM_SLAVE_BODY_BREASTS)) {
 			CreationController.initAreolaeSizeListeners();
 			CreationController.initBreastCountListeners();
+			CreationController.initBreastSagginessListeners();
 			CreationController.initBreastShapeListeners();
 			CreationController.initBreastSizeListeners(false);
 			CreationController.initBreastTypeListeners();

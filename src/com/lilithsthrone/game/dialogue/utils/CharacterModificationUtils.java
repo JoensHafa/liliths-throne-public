@@ -69,6 +69,7 @@ import com.lilithsthrone.game.character.body.valueEnums.AssSize;
 import com.lilithsthrone.game.character.body.valueEnums.BodyHair;
 import com.lilithsthrone.game.character.body.valueEnums.BodyMaterial;
 import com.lilithsthrone.game.character.body.valueEnums.BodySize;
+import com.lilithsthrone.game.character.body.valueEnums.BreastSagginess;
 import com.lilithsthrone.game.character.body.valueEnums.BreastShape;
 import com.lilithsthrone.game.character.body.valueEnums.Capacity;
 import com.lilithsthrone.game.character.body.valueEnums.ClitorisSize;
@@ -2917,6 +2918,32 @@ public class CharacterModificationUtils {
 				UtilText.parse(BodyChanging.getTarget(), "Change the shape of [npc.namePos] breasts."
 						+ "<br/><i>This is primarily a cosmetic change, but also affects some descriptions in sex.</i>"),
 				"BREAST_SHAPE",
+				contentSB.toString(),
+				true);
+	}
+	
+	public static String getSelfTransformBreastSagginessDiv() {
+		contentSB.setLength(0);
+		
+		for(BreastSagginess bs : BreastSagginess.values()) {
+			if(BodyChanging.getTarget().getBreastSagginess() == bs) {
+				contentSB.append(
+						"<div class='cosmetics-button active'>"
+							+ "<span style='color:"+PresetColour.TRANSFORMATION_SEXUAL.toWebHexString()+";'>"+Util.capitaliseSentence(bs.getDescriptor())+"</span>"
+						+ "</div>");
+				
+			} else {
+				contentSB.append(
+						"<div id='BREAST_SAGGINESS_"+bs+"' class='cosmetics-button'>"
+							+ "<span style='color:"+PresetColour.TRANSFORMATION_SEXUAL.getShades()[0]+";'>"+Util.capitaliseSentence(bs.getDescriptor())+"</span>"
+						+ "</div>");
+			}
+		}
+
+		return applyWrapper("Breast Sagginess",
+				UtilText.parse(BodyChanging.getTarget(), "Change how much [npc.namePos] breasts hang down."
+						+ "<br/><i>This affects body descriptions, and higher values conflict with some breast shapes.</i>"),
+				"BREAST_SAGGINESS",
 				contentSB.toString(),
 				true);
 	}
